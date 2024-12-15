@@ -463,27 +463,24 @@ VOsub_1 = 0
 val0 = [VO2C, H_O2C, O2C, O3C, Osub_1, Osub_2, Osub_3,
  Osub_4, Osub_5 ,Ti5C, H ,H_O3crot ,H_Osub_1, H_Osub_2,
  H_Osub_3, H_Osub_3rot, H_Osub_4, H_Osub_5, H2, H2O, H2O2C, H_O3C, H_Ti5C, VOsub_1]
+## ordered initial values matching the list species
 
 list_species = ['*2C', '*HO2C', '*O2C', '*O3C', '*Osub_1', '*Osub_2', '*Osub_3',
        '*Osub_4', '*Osub_5', '*Ti5C', 'H', 'H*O3Crot', 'H*Osub_1',
        'H*Osub_2', 'H*Osub_3', 'H*Osub_3rot', 'H*Osub_4', 'H*Osub_5',
        'H2', 'H2O', 'H2O2C', 'HO3C', 'HTi5C', 'VOsub_1']
+
+
 species_dict ={}
+
 for i, list in enumerate(list_species):
-    species_dict[list] = val0[i]
+    species_dict[list] = val0[i] ## assigning the initial values
 print(species_dict)
 
-#alpha = [1e-6, 1e-4, 1e-2, 1, 10]
 
 
-# # First Set of Simulation below
-# 
-# All reactions are included
-
-# In[4]:
 
 
-#print(species_dict)
 #The atomic H adsorption microkinetic model!
 
 T_HAX = []
@@ -491,17 +488,15 @@ T_LAX = []
 Y_HAX = []
 Y_LAX = []
 
-A = 6.684 * 3.005
+A = 6.684 * 3.005 ##### Angstroms, surface unit cell area
 # time span:
 t0 = 0
-t1 = 18000#86400*2 # 2000
-#[ 0.2, 0.4, 0.8, 1, 2, 4, 8, 16, 32, 80, 160]
+t1 = 18000#86400*2 # 2000 ### seconds
+
+
 for T in T_range:
     print('Temperature', T)
     # Reaction 2: 1 HTi5C + 1 HO2C <-> 1 H2 + 1 *Ti5C + 1 *O2C
-    
-    
-
     mu = mu_H2_ideal(p_H2,T)
     mol = molecule('H2')
     m_mol = 2 * mol.get_masses()[0]
@@ -520,7 +515,7 @@ for T in T_range:
     print('adsorption rate limits reaction 2: ', k_ads_up_2, k_ads_low_2)
     print('desorption rate limits reaction 2: ', k_des_up_2, k_des_low_2)
 
-    #T = 300 + 273 ### Temperature of atomic Hydrogen
+    #T = 300 + 273 ### Temperature of atomic Hydrogen, could be different from the temperature of molecular hydrogen
 
     # Reaction 3: 1 H + 1 *O3C <-> 1 HO3C
     
@@ -529,8 +524,8 @@ for T in T_range:
     m_mol = mol.get_masses().sum()
     sigma = 1 
     mu = mu_H_ideal(p_H*A/A1, T)
-    E_act_3 = 0.08 #+0.1
-    E_rct_3 = -1.91  + 0.23 # + 3749*0.5/8065.540106923572 # E_final - E_initial zpe: 3749*0.5/8065.540106923572 ev(hydroxyl) ~ 0.23 eV- 
+    E_act_3 = 0.08 
+    E_rct_3 = -1.91  + 0.23  
     #k_fwd_3 = calc_k_Eyring(T, E_act_3)
     #k_bwd_3 = calc_k_Eyring(T, E_act_3-E_rct_3)
     #A = 1.5
